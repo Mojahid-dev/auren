@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
 import {
@@ -13,6 +15,10 @@ import {
   UsersRound,
 } from "lucide-react";
 import styles from "./register.module.css";
+import { useForm, SubmitHandler } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { basicDetailsSchema } from "@/app/schemas/basic-details";
+import type { BasicDetailsForm } from "@/app/schemas/basic-details";
 
 const benefits = [
   {
@@ -46,6 +52,24 @@ function BenefitIcon({ name }: { name: string }) {
 }
 
 export default function PartnerRegisterPage() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(basicDetailsSchema),
+    defaultValues: {
+      businessName: "",
+      name: "",
+      email: "",
+      phone: "",
+      password: "",
+    },
+  });
+  const onSubmit: SubmitHandler<BasicDetailsForm> = (data) => {
+    console.log(data);
+  };
+
   return (
     <main className={styles.page}>
       <header className={styles.header}>
@@ -118,53 +142,85 @@ export default function PartnerRegisterPage() {
                 Start by telling us about your repair business and yourself.
               </p>
             </div>
-            <form className={styles.form}>
+            <form className={styles.form} onSubmit={handleSubmit(onSubmit)}>
               <label>
                 Business name
                 <span className={styles.inputWrap}>
                   <Store aria-hidden="true" />
-                  <input type="text" placeholder="Enter your business name" />
+                  <input
+                    type="text"
+                    placeholder="Enter your business name"
+                    {...register("businessName")}
+                  />
                 </span>
+                {errors.businessName && (
+                  <p className={styles.error}>{errors.businessName.message}</p>
+                )}
+
               </label>
               <label>
                 Owner name
                 <span className={styles.inputWrap}>
                   <UserRound aria-hidden="true" />
-                  <input type="text" placeholder="Enter owner’s full name" />
+                  <input
+                    type="text"
+                    placeholder="Enter owner’s full name"
+                    {...register("name")}
+                  />
                 </span>
+                {errors.name && (
+                  <p className={styles.error}>
+                    {errors.name.message}
+                  </p>
+                )}
               </label>
               <label>
                 Your email
                 <span className={styles.inputWrap}>
                   <Mail aria-hidden="true" />
-                  <input type="email" placeholder="Enter your business email" />
+                  <input
+                    type="email"
+                    placeholder="Enter your business email"
+                    {...register("email")}
+                  />
                 </span>
+                {errors.email && (
+                  <p className={styles.error}>{errors.email.message}</p>
+                )}
               </label>
               <label>
                 Phone number
                 <span className={`${styles.inputWrap} ${styles.phoneWrap}`}>
-                  <Phone aria-hidden="true" />
-                  <select aria-label="Country calling code" defaultValue="+91">
-                    <option value="+91">+91</option>
-                    <option value="+1">+1</option>
-                    <option value="+44">+44</option>
-                  </select>
-                  <input type="tel" placeholder="Enter phone number" />
+                  <input
+                    type="tel"
+                    placeholder="Enter phone number"
+                    {...register("phone")}
+                  />
                 </span>
+                {errors.phone && (
+                  <p className={styles.error}>{errors.phone.message}</p>
+                )}
               </label>
               <label>
                 Password
                 <span className={styles.inputWrap}>
                   <LockKeyhole aria-hidden="true" />
-                  <input type="password" placeholder="Create a password" />
+                  <input
+                    type="password"
+                    placeholder="Create a password"
+                    {...register("password")}
+                  />
                   <Eye aria-hidden="true" className={styles.trailingIcon} />
                 </span>
+                {errors.password && (
+                  <p className={styles.error}>{errors.password.message}</p>
+                )}
               </label>
               <p className={styles.hint}>
                 Use at least 8 characters with a mix of letters, numbers and a
                 symbol.
               </p>
-              <button className={styles.continueButton} type="button">
+              <button className={styles.continueButton} type="submit">
                 Continue <ArrowRight aria-hidden="true" />
               </button>
             </form>
