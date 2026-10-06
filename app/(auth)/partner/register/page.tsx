@@ -156,7 +156,6 @@ export default function PartnerRegisterPage() {
                 {errors.businessName && (
                   <p className={styles.error}>{errors.businessName.message}</p>
                 )}
-
               </label>
               <label>
                 Owner name
