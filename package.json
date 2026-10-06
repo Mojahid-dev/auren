@@ -9,11 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
-<<<<<<< Updated upstream
-=======
     "@hookform/resolvers": "^5.9.1",
     "lucide-react": "^1.51.0",
->>>>>>> Stashed changes
     "next": "16.3.8",
     "react": "19.2.8",
     "react-dom": "19.2.8",
